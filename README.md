@@ -56,7 +56,7 @@ sudo apt-get install graphviz
 ```sh
 yum install graphviz
 ```
-Step 2: Create Your First AWS Diagram
+### Step 2: Create Your First AWS Diagram
 
 Here's a simple example showing an AWS load balancer connected to a web server and a database.
 
@@ -84,34 +84,48 @@ python simple_aws_architecture.py
 
 ![Clustered Webservices](images/simple_aws_web_service.png)
 
-Step 3: Model a VPC with Public and Private Subnets
+Step 3: Model a Nested Clusters
 
-Let's go a bit deeper and create a more realistic VPC layout:
+Let's go a bit deeper and create a more Nested Clusters layout:
 
-create a file named vpc_aws_architecture.py
+create a file named nested_cluster.py
 
 ```python
 from diagrams import Cluster, Diagram
-from diagrams.aws.network import VPC, PublicSubnet, PrivateSubnet
-from diagrams.aws.compute import EC2
-from diagrams.aws.database import RDS
+from diagrams.aws.compute import ECS, EKS, Lambda
+from diagrams.aws.database import Redshift
+from diagrams.aws.integration import SQS
+from diagrams.aws.storage import S3
 
-with Diagram("VPC with Public/Private Subnets", show=True):
-    with Cluster("VPC"):
-        public = PublicSubnet("Public Subnet")
-        private = PrivateSubnet("Private Subnet")
+with Diagram("Event Processing", show=False):
+    source = EKS("k8s source")
 
-        web = EC2("Web App")
-        db = RDS("Database")
+    with Cluster("Event Flows"):
+        with Cluster("Event Workers"):
+            workers = [ECS("worker1"),
+                       ECS("worker2"),
+                       ECS("worker3")]
 
-        public >> web
-        private >> db
-        web >> db
+        queue = SQS("event queue")
+
+        with Cluster("Processing"):
+            handlers = [Lambda("proc1"),
+                        Lambda("proc2"),
+                        Lambda("proc3")]
+
+    store = S3("events store")
+    dw = Redshift("analytics")
+
+    source >> workers >> queue >> handlers
+    handlers >> store
+    handlers >> dw
 
 ```
 
+![Event Processing Diagram](images/event_processing_diagram.png)
 
-#### Step 4: Best Practices for Architecture as Code
+
+### Step 4: Best Practices for Architecture as Code
 
 Use Clusters: Group related resources like subnets, AZs, or environments.
 
