@@ -82,7 +82,7 @@ Run it:
 python simple_aws_architecture.py
 ```
 
-![Clustered Webservices](images/clustered_web_services.png)
+![Clustered Webservices](images/simple_aws_web_service.png)
 
 Step 3: Model a VPC with Public and Private Subnets
 
