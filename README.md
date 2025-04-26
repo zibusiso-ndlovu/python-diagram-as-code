@@ -82,6 +82,8 @@ Run it:
 python simple_aws_architecture.py
 ```
 
+![Clustered Webservices](images/clustered_web_services.png)
+
 Step 3: Model a VPC with Public and Private Subnets
 
 Let's go a bit deeper and create a more realistic VPC layout:
@@ -122,6 +124,10 @@ Automate: Include diagram generation in your CI pipeline.
 ### Final Thoughts
 
 Diagrams-as-code brings the same benefits of infrastructure-as-code to your visual documentation. Whether you're designing, communicating, or auditing your AWS architecture, the Python Diagrams library is a lightweight and effective way to keep your diagrams aligned with your actual deployments.
+
+References
+https://diagrams.mingrammer.com/docs/getting-started/examples#clustered-web-services
+
 
 
 
